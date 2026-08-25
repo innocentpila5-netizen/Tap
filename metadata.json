@@ -1,0 +1,6 @@
+{
+  "name": "TapPoints",
+  "description": "Mobile-first rewards app where users tap to earn points, convert to INR currency, request UPI withdrawals with server-side anti-fraud security and admin controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
