@@ -1,4 +1,4 @@
-name: Build Native Android APK and AAB (Capacitor)
+name: Build Android APK & AAB
 
 on:
   push:
@@ -18,10 +18,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - name: Install Node Dependencies
-        run: npm ci || npm install
+        run: npm install
 
       - name: Build Web Production Assets
         run: npm run build
@@ -33,32 +32,28 @@ jobs:
           java-version: 17
           cache: 'gradle'
 
-      - name: Setup Android SDK Environment
-        run: |
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          yes | sdkmanager --licenses || true
-
       - name: Sync Capacitor Android Project
-        run: |
-          npx cap sync android
+        run: npx cap sync android
 
-      - name: Build Android APK & AAB with Gradle
-        run: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew assembleDebug bundleDebug --no-daemon --stacktrace
+      - name: Grant Execute Permission to Gradle
+        run: chmod +x android/gradlew
+
+      - name: Build Android APK & AAB
+        working-directory: android
+        run: ./gradlew assembleDebug bundleDebug --no-daemon --stacktrace
 
       - name: Upload Debug APK (For Direct Phone Installation)
         uses: actions/upload-artifact@v4
         with:
           name: TapPoints-APK
-          path: android/app/build/outputs/apk/debug/
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
           retention-days: 30
 
       - name: Upload Debug AAB (For Google Play Store Console)
         uses: actions/upload-artifact@v4
         with:
           name: TapPoints-AAB
-          path: android/app/build/outputs/bundle/debug/
+          path: android/app/build/outputs/bundle/debug/app-debug.aab
+          if-no-files-found: warn
           retention-days: 30
-
