@@ -35,8 +35,13 @@ jobs:
       - name: Sync Capacitor Android Project
         run: npx cap sync android
 
-      - name: Grant Execute Permission to Gradle
-        run: chmod +x android/gradlew
+      - name: Verify Gradle Wrapper JAR
+        run: |
+          if [ ! -s android/gradle/wrapper/gradle-wrapper.jar ] || ! unzip -t android/gradle/wrapper/gradle-wrapper.jar >/dev/null 2>&1; then
+            echo "Repairing corrupted gradle-wrapper.jar..."
+            curl -sSL https://raw.githubusercontent.com/gradle/gradle/v8.14.3/gradle/wrapper/gradle-wrapper.jar -o android/gradle/wrapper/gradle-wrapper.jar
+          fi
+          chmod +x android/gradlew
 
       - name: Build Android APK & AAB
         working-directory: android
