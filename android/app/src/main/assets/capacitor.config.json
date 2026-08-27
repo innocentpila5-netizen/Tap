@@ -1,0 +1,14 @@
+{
+	"appId": "com.tappoints.rewards",
+	"appName": "TapPoints",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": true
+	},
+	"android": {
+		"allowMixedContent": true,
+		"captureInput": true,
+		"webContentsDebuggingEnabled": true
+	}
+}

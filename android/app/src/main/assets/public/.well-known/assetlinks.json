@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.tappoints.rewards",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:01:F8:85:7E:0E:12:F8:3E:86:11:93:2A:EC:92:8F:07:7B:3A:1C:62:A6:3C:5D:84:47:44:A2:65:B7"
+      ]
+    }
+  }
+]

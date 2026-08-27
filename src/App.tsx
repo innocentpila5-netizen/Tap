@@ -13,6 +13,7 @@ import {
   Coins,
   ArrowUpRight,
   Award,
+  Download,
 } from 'lucide-react';
 import { User, Profile, AppSettings, AccountStatus } from './types.js';
 import { api } from './services/api.js';
@@ -30,6 +31,7 @@ import { ProfileModal } from './components/ProfileModal.js';
 import { AuthModal } from './components/AuthModal.js';
 import { AdminPanel } from './components/AdminPanel.js';
 import { SubscriptionModal } from './components/SubscriptionModal.js';
+import { InstallAppModal } from './components/InstallAppModal.js';
 import { triggerHaptic, playCoinSound } from './utils/audio.js';
 
 export default function App() {
@@ -75,6 +77,7 @@ export default function App() {
   const [isRewardedAdOpen, setIsRewardedAdOpen] = useState(false);
   const [isInterstitialAdOpen, setIsInterstitialAdOpen] = useState(false);
   const [isPlansOpen, setIsPlansOpen] = useState(false);
+  const [isInstallAppOpen, setIsInstallAppOpen] = useState(false);
 
   // Load user data on startup
   const loadUserData = useCallback(async () => {
@@ -215,6 +218,17 @@ export default function App() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Install App / APK Button */}
+          <button
+            onClick={() => setIsInstallAppOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-xs font-bold transition cursor-pointer shadow-sm shadow-emerald-950/40"
+            title="Download / Install Android APK"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span className="hidden xs:inline">Install</span>
+            <span>APK</span>
+          </button>
+
           {/* Mobile frame toggle */}
           <button
             onClick={() => setIsMobileFrame(!isMobileFrame)}
@@ -355,6 +369,26 @@ export default function App() {
               />
             </div>
 
+            {/* Mobile App / APK Promo Card */}
+            <div className="p-3 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-teal-950/40 border border-emerald-500/20 rounded-2xl flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <Smartphone className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white">TapPoints Android App</h4>
+                  <p className="text-[10px] text-slate-400">Install APK directly on your phone</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsInstallAppOpen(true)}
+                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Get APK</span>
+              </button>
+            </div>
+
             {/* Micro FAQ & Security reassurance footer */}
             <div className="pt-2 text-center text-[11px] text-slate-500 space-y-1">
               <p className="flex items-center justify-center gap-1">
@@ -375,17 +409,27 @@ export default function App() {
                 Tap to earn rewards. Convert points to ₹ INR and withdraw directly via UPI.
               </p>
             </div>
-            <button
-              onClick={() => setIsAuthOpen(true)}
-              className="py-2.5 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer"
-            >
-              Sign In / Start Earning
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2 w-full max-w-xs justify-center">
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="flex-1 py-2.5 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer"
+              >
+                Sign In / Start Earning
+              </button>
+              <button
+                onClick={() => setIsInstallAppOpen(true)}
+                className="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Get APK</span>
+              </button>
+            </div>
           </div>
         )}
       </main>
 
       {/* Modals & Dialogs */}
+      <InstallAppModal isOpen={isInstallAppOpen} onClose={() => setIsInstallAppOpen(false)} />
       {profile && user && (
         <>
           <WithdrawModal
